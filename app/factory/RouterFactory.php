@@ -31,6 +31,6 @@ class RouterFactory extends AbstractFactory
     }
 
     public function addRouter(IRouterController $router) {
-        $this->router->run($router);
+        @$this->router->run($router);
     }
 }

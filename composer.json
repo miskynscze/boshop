@@ -2,7 +2,13 @@
     "name": "root/boshop",
     "description": "BoShop ready system for eshop with cashier",
     "type": "project",
-    "require": {},
+    "require": {
+        "filp/whoops": "^2.12",
+        "miskynscze/freerouter": "^0.1.1",
+        "vlucas/phpdotenv": "^5.3",
+        "catfan/medoo": "^2.0",
+        "latte/latte": "^2.10"
+    },
     "autoload": {
         "psr-4": {
             "BoShop\\": "app/",
