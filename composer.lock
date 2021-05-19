@@ -1,0 +1,47 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "ec0dadff4807266c112aab0a30fafa3a",
+    "packages": [
+        {
+            "name": "miskynscze/freerouter",
+            "version": "v0.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/miskynscze/freerouter.git",
+                "reference": "69521df7f2907f26f22d9b1401bae559b4135e61"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/miskynscze/freerouter/zipball/69521df7f2907f26f22d9b1401bae559b4135e61",
+                "reference": "69521df7f2907f26f22d9b1401bae559b4135e61",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "FreeRouter\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "FreeRouter where the easy routing begins the pain ends.",
+            "support": {
+                "issues": "https://github.com/miskynscze/freerouter/issues",
+                "source": "https://github.com/miskynscze/freerouter/tree/v0.1.1"
+            },
+            "time": "2021-02-24T18:46:15+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.0.0"
+}

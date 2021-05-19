@@ -1,0 +1,12 @@
+{
+    "name": "root/boshop",
+    "description": "BoShop ready system for eshop with cashier",
+    "type": "project",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "BoShop\\": "app/",
+            "Modules\\": "modules/"
+        }
+    }
+}
