@@ -41,6 +41,10 @@ class Order extends DatabaseRow
 
     public array $orderItems;
 
+    private float $priceVAT;
+    private float $price;
+    private float $vat;
+
     public function save($forceInsert = false): bool
     {
         $this->setDateUpdated();
@@ -88,6 +92,9 @@ class Order extends DatabaseRow
     }
 
     public function getPriceVAT(): float {
+        if($this->priceVAT ?? null)
+            return $this->priceVAT;
+
         $price = 0;
 
         /** @var OrderItem $orderItem */
@@ -95,11 +102,54 @@ class Order extends DatabaseRow
             $price += $orderItem->getPriceVAT();
         }
 
-        if($this->coupon) {
+        if($this->coupon ?? null) {
             $price = $this->coupon->calculate($price);
         }
 
+        $this->priceVAT = $price;
+
         return $price;
+    }
+
+    public function getPrice(): float {
+        if($this->price ?? null)
+            return $this->price;
+
+        $price = 0;
+
+        /** @var OrderItem $orderItem */
+        foreach ($this->orderItems as $orderItem) {
+            $price += $orderItem->getPrice();
+        }
+
+        if($this->coupon ?? null) {
+            $price = $this->coupon->calculate($price);
+        }
+
+        $this->price = $price;
+
+        return $price;
+    }
+
+    public function getVAT(): float {
+        if($this->vat ?? null)
+            return $this->vat;
+
+        $priceVAT = $this->getPriceVAT();
+        $price = $this->getPrice();
+
+        $vat = $priceVAT - $price;
+        $this->vat = $vat;
+
+        return $vat;
+    }
+
+    public function getOrderItems(): array {
+        return $this->orderItems;
+    }
+
+    public function setCoupon(?Coupon $coupon): void {
+        $this->coupon = $coupon;
     }
 
     private function setDateUpdated(): void {

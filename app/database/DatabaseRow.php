@@ -61,8 +61,8 @@ class DatabaseRow extends \stdClass
 
         //Ignored variables remove
         foreach (static::$ignoreVars as $key => $ignoredVar) {
-            if(array_key_exists($key, $dataUpdate)) {
-                unset($dataUpdate[$key]);
+            if(array_key_exists($ignoredVar, $dataUpdate)) {
+                unset($dataUpdate[$ignoredVar]);
             }
         }
 
@@ -119,13 +119,19 @@ class DatabaseRow extends \stdClass
 
     private function setData(array $data): void {
         foreach ($data as $key => $value) {
-            if(in_array($key, static::$ignoreVars)) {
+            if(in_array($key, static::$ignoreVars, true)) {
                 continue;
             }
 
             $propertyType = SimpleTools::getPropertyType($this, $key);
             //Fetch model by ID
-            if(!in_array($propertyType, ["int", "string", "bool"]) && (new $propertyType()) instanceof DatabaseRow) {
+            if(!in_array($propertyType, ["int", "string", "bool", "float", "double"]) && (new $propertyType()) instanceof DatabaseRow) {
+                //null value fix
+                if($value === null) {
+                    $this->{$key} = $value;
+                    continue;
+                }
+
                 /** @var DatabaseRow $class */
                 $class = new $propertyType();
                 $class->getById($value);
@@ -136,7 +142,7 @@ class DatabaseRow extends \stdClass
         }
     }
 
-    private function getDependencies($vars) {
+    private function getDependencies(array $vars): array {
         foreach ($vars as $key => $value) {
             /** @var DatabaseRow $var */
             $var = $this->{$key};

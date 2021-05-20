@@ -29,6 +29,14 @@ class OrderItem extends DatabaseRow
     }
 
     public function getPriceVAT(): float {
-        return $this->product->price * $this->quantity;
+        return $this->product->getPriceVAT() * $this->quantity;
+    }
+
+    public function getPrice(): float {
+        return $this->product->getPrice() * $this->quantity;
+    }
+
+    public function getProduct(): ProductMutation {
+        return $this->product;
     }
 }

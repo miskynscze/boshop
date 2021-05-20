@@ -29,14 +29,16 @@ class Coupon extends DatabaseRow
 
     public string $dateCreated;
     public string $dateUpdated;
-    public string $dateFrom;
-    public string $dateTo;
+    public ?string $dateFrom;
+    public ?string $dateTo;
 
     public function calculate(float $price): float {
+        //Percent coupon in %-
         if($this->type === self::PERCENT) {
-            $price *= (100 + $this->value) / 100;
+            $price *= (100 - $this->value) / 100;
         }
 
+        //Value -
         if($this->type === self::VALUE) {
             $price -= $this->value;
         }

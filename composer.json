@@ -7,7 +7,9 @@
         "miskynscze/freerouter": "^0.1.1",
         "vlucas/phpdotenv": "^5.3",
         "catfan/medoo": "^2.0",
-        "latte/latte": "^2.10"
+        "latte/latte": "^2.10",
+        "moneyphp/money": "^4.0",
+      "ext-intl": "*"
     },
     "autoload": {
         "psr-4": {

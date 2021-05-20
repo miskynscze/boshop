@@ -2,7 +2,10 @@
 
 namespace Modules\Default\Router;
 
+use BoShop\System\Orders\Coupon;
+use BoShop\System\Orders\OrderItem;
 use BoShop\System\Users\User;
+use BoShop\Tools\MoneyTools;
 use FreeRouter\Attributes\Class\Controller;
 use FreeRouter\Attributes\Method;
 use FreeRouter\Attributes\Request;
@@ -78,7 +81,27 @@ class DefaultRouter implements IRouter
         $order = new Order();
         $order->getById($id);
 
-        echo "<pre>";
-        var_dump($order);
+        $items = $order->getOrderItems();
+
+        /** @var OrderItem $item */
+        foreach ($items as $item) {
+            echo $item->getProduct();
+        }
+    }
+
+    #[Request("/setOrder/{id}")]
+    #[Method(RequestMethod::GET)]
+    public function setOrder($id)
+    {
+        $order = new Order();
+        $order->getById($id);
+
+        $coupon = new Coupon();
+        $coupon->getById(2);
+
+        $order->setCoupon($coupon);
+        $order->save();
+
+        echo "Cena je " . $order->getPriceVAT();
     }
 }

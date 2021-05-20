@@ -28,7 +28,7 @@ class ProductMutation extends DatabaseRow
 
     public string $alias;
 
-    public float $buyPrice;
+    public ?float $buyPrice;
     public float $price;
 
     public VAT $vat;
@@ -38,4 +38,16 @@ class ProductMutation extends DatabaseRow
     public int $stockStatus = self::IN_STOCK;
 
     public bool $published = false;
+
+    public function getPriceVAT(): float {
+        return $this->price * (100 + $this->vat->vat) / 100;
+    }
+
+    public function getPrice(): float {
+        return $this->price;
+    }
+
+    public function __toString(): string {
+        return $this->name;
+    }
 }

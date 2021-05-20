@@ -36,4 +36,8 @@ class User extends DatabaseRow
         $this->password = password_hash($this->password, PASSWORD_DEFAULT);
         return $this->save();
     }
+
+    public function getFullname(): string {
+        return $this->firstname . " " . $this->lastname;
+    }
 }
