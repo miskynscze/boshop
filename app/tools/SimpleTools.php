@@ -20,4 +20,15 @@ class SimpleTools
 
         return $class;
     }
+
+    public static function instanceClass(object $object): object {
+        $className = get_class($object);
+
+        return new $className();
+    }
+
+    public static function getPropertyType(object $class, string $property) {
+        $reflection = new \ReflectionProperty($class, $property);
+        return $reflection->getType()->getName();
+    }
 }

@@ -8,6 +8,7 @@ use FreeRouter\Attributes\Method;
 use FreeRouter\Attributes\Request;
 use FreeRouter\Attributes\RequestMethod;
 use FreeRouter\Interface\IRouter;
+use BoShop\System\Orders\Order;
 
 #[Controller]
 class DefaultRouter implements IRouter
@@ -55,5 +56,29 @@ class DefaultRouter implements IRouter
 
         $user->getById($id);
         $user->delete();
+    }
+
+    #[Request("/order")]
+    #[Method(RequestMethod::GET)]
+    public function createOrder()
+    {
+        $user = new User();
+        $user->getById(1);
+
+        $order = new Order();
+        $order->user_id = $user;
+
+        $order->save();
+    }
+
+    #[Request("/getOrder/{id}")]
+    #[Method(RequestMethod::GET)]
+    public function getOrder($id)
+    {
+        $order = new Order();
+        $order->getById($id);
+
+        echo "<pre>";
+        var_dump($order);
     }
 }

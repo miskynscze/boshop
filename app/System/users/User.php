@@ -11,8 +11,12 @@ class User extends DatabaseRow
 
     protected static string $primaryKey = "user_id";
     protected static string $tableName = "users";
+    protected static array $ignoreVars = [];
 
     public int $user_id;
+
+    public UserAddress $deliveryAddress;
+    public UserAddress $invoiceAddress;
 
     public string $firstname;
     public string $lastname;
@@ -26,4 +30,10 @@ class User extends DatabaseRow
 
     public string $dateCreated;
     public string $dateUpdated;
+
+    public function createUser(): bool
+    {
+        $this->password = password_hash($this->password, PASSWORD_DEFAULT);
+        return $this->save();
+    }
 }
