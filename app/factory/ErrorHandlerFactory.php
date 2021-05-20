@@ -1,7 +1,7 @@
 <?php
 
 
-namespace BoShop\factory;
+namespace BoShop\Factory;
 
 
 use Whoops\Handler\PrettyPageHandler;
@@ -13,7 +13,14 @@ class ErrorHandlerFactory extends AbstractFactory
     public static function produce()
     {
         $whoops = new Run();
-        $whoops->pushHandler(new PrettyPageHandler());
+
+        if($_ENV["DEBUG"]) {
+            $whoops->pushHandler(new PrettyPageHandler());
+        } else {
+            $whoops->pushHandler(function($e) {
+                echo "There was an error";
+            });
+        }
         $whoops->register();
     }
 }

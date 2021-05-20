@@ -36,7 +36,10 @@ class DatabaseRow extends \stdClass
     public function getByWhere(array $where): self {
         $data = static::$database->get(static::$tableName, "*", $where);
 
-        $this->setData($data);
+        //Fix if data was not found
+        if($data ?? null)
+            $this->setData($data);
+
         return $this;
     }
 

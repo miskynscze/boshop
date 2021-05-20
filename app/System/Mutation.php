@@ -19,4 +19,10 @@ class Mutation extends DatabaseRow
     public string $domain;
 
     public bool $activated = false;
+
+    public function getByDomain(string $domain) {
+        $this->getByWhere([
+            "domain" => $domain
+        ]);
+    }
 }

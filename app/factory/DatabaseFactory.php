@@ -1,7 +1,7 @@
 <?php
 
 
-namespace BoShop\factory;
+namespace BoShop\Factory;
 
 
 use BoShop\database\Database;
