@@ -15,6 +15,7 @@ class Project extends DatabaseRow
     public int $project_id;
 
     public string $name;
+    public string $domain;
 
     public bool $activated = true;
 
@@ -34,5 +35,11 @@ class Project extends DatabaseRow
     public function activate(): void {
         $this->activated = true;
         $this->save();
+    }
+
+    public function getByDomain(string $domain) {
+        $this->getByWhere([
+            "domain" => $domain
+        ]);
     }
 }

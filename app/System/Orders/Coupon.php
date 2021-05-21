@@ -45,4 +45,10 @@ class Coupon extends DatabaseRow
 
         return $price;
     }
+
+    public function getCouponCost(float $price): float {
+        $calculated = $this->calculate($price);
+
+        return $price - $calculated;
+    }
 }

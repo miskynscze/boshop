@@ -16,13 +16,15 @@ class Mutation extends DatabaseRow
     public Project $project_id;
 
     public string $name;
-    public string $domain;
+    public string $languageAlias;
 
     public bool $activated = false;
 
-    public function getByDomain(string $domain) {
+    public function getByLanguageAlias(string $alias): ?self {
         $this->getByWhere([
-            "domain" => $domain
+            "languageAlias" => $alias
         ]);
+
+        return $this;
     }
 }

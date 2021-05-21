@@ -14,6 +14,7 @@ class DatabaseRow extends \stdClass
     protected static string $tableName;
     protected static string $primaryKey;
     protected static array $ignoreVars = [];
+    protected static ?array $callbacksLoad = null;
 
     private static Medoo $database;
 
@@ -30,6 +31,7 @@ class DatabaseRow extends \stdClass
         ]);
 
         $this->setData($data);
+
         return $this;
     }
 
@@ -143,6 +145,8 @@ class DatabaseRow extends \stdClass
                 $this->{$key} = $value;
             }
         }
+
+        $this->runCallbacks();
     }
 
     private function getDependencies(array $vars): array {
@@ -156,5 +160,13 @@ class DatabaseRow extends \stdClass
         }
 
         return $vars;
+    }
+
+    private function runCallbacks(): void {
+        if(static::$callbacksLoad !== null) {
+            foreach (static::$callbacksLoad as $callback) {
+                $this->{$callback}();
+            }
+        }
     }
 }

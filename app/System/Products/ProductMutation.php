@@ -7,6 +7,7 @@ namespace BoShop\System\Products;
 use BoShop\Database\DatabaseRow;
 use BoShop\System\Mutation;
 use BoShop\System\VAT;
+use BoShop\Tools\ProjectTools;
 
 class ProductMutation extends DatabaseRow
 {
@@ -20,7 +21,7 @@ class ProductMutation extends DatabaseRow
     protected static string $tableName = "products_mutations";
 
     public int $product_mutation_id;
-    public Product $product_id;
+    public int $product_id;
 
     public string $name;
     public string $description;
@@ -45,6 +46,33 @@ class ProductMutation extends DatabaseRow
 
     public function getPrice(): float {
         return $this->price;
+    }
+
+    public function getProductsByMutation(Mutation $mutation = null): array {
+        if($mutation === null) {
+            $mutation = ProjectTools::getMutation();
+        }
+
+        return $this->getAllByWhere([
+            "mutation" => $mutation->getPrimaryKeyValue()
+        ]);
+    }
+
+    public function getProductMutation(Product $product, Mutation $mutation = null): ?self {
+        if($mutation === null) {
+            $mutation = ProjectTools::getMutation();
+        }
+
+        $this->getByWhere([
+            "mutation" => $mutation->getPrimaryKeyValue(),
+            "product_id" => $product->getPrimaryKeyValue()
+        ]);
+
+        return $this;
+    }
+
+    public function isStockFree(int $quantity): bool {
+        return $this->quantityStock >= $quantity;
     }
 
     public function __toString(): string {

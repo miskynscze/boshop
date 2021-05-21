@@ -4,7 +4,7 @@
 namespace BoShop\Factory;
 
 
-use BoShop\System\Mutation;
+use BoShop\System\Project;
 
 class BoShopFactory extends AbstractFactory
 {
@@ -14,11 +14,11 @@ class BoShopFactory extends AbstractFactory
         \BoShop\factory\EnvironmentFactory::produce();
         \BoShop\factory\ErrorHandlerFactory::produce();
 
-        //Anti-piracy check
-        $mutation = new Mutation();
-        $mutation->getByDomain($_SERVER["HTTP_HOST"]);
+        //Anti-piracy check and activated
+        $project = new Project();
+        $project->getByDomain($_SERVER["HTTP_HOST"]);
 
-        if($mutation->mutation_id ?? null) {
+        if(($project->project_id ?? null) && $project->isActivated()) {
             \BoShop\Factory\RouterFactory::produce();
         } else {
             throw new \Exception("Domain was not found in any project or mutation");
