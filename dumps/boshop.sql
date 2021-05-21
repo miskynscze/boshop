@@ -59,10 +59,10 @@ CREATE TABLE `mutations` (
   `mutation_id` int(11) NOT NULL AUTO_INCREMENT,
   `project_id` int(11) NOT NULL,
   `name` varchar(200) NOT NULL,
-  `domain` varchar(250) NOT NULL,
+  `languageAlias` varchar(10) DEFAULT NULL,
   `activated` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`mutation_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -71,7 +71,7 @@ CREATE TABLE `mutations` (
 
 LOCK TABLES `mutations` WRITE;
 /*!40000 ALTER TABLE `mutations` DISABLE KEYS */;
-INSERT INTO `mutations` VALUES (1,1,'Testovací eshop','boshop.localhost',1);
+INSERT INTO `mutations` VALUES (1,1,'Testovací eshop','cs',1),(2,2,'Testovací eshop','en',1);
 /*!40000 ALTER TABLE `mutations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -128,7 +128,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (1,1,NULL,NULL,1,2,1,'2021-05-20 13:16:55','2021-05-20 23:50:26'),(2,1,NULL,NULL,1,1,1,'2021-05-20 13:16:55','2021-05-20 13:16:55'),(3,1,NULL,NULL,1,1,1,'2021-05-20 13:16:55','2021-05-20 13:16:55'),(4,1,NULL,NULL,1,1,1,'2021-05-20 13:16:55','2021-05-20 13:16:55'),(5,1,NULL,NULL,1,1,1,'2021-05-20 13:16:55','2021-05-20 13:16:55');
+INSERT INTO `orders` VALUES (1,1,NULL,NULL,1,2,1,'2021-05-20 13:16:55','2021-05-21 00:01:20'),(2,1,NULL,NULL,1,1,1,'2021-05-20 13:16:55','2021-05-20 13:16:55'),(3,1,NULL,NULL,1,1,1,'2021-05-20 13:16:55','2021-05-20 13:16:55'),(4,1,NULL,NULL,1,1,1,'2021-05-20 13:16:55','2021-05-20 13:16:55'),(5,1,NULL,NULL,1,1,1,'2021-05-20 13:16:55','2021-05-20 13:16:55');
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -141,6 +141,7 @@ DROP TABLE IF EXISTS `products`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `products` (
   `product_id` int(11) NOT NULL AUTO_INCREMENT,
+  `published` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`product_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -151,7 +152,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (1);
+INSERT INTO `products` VALUES (1,0);
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -186,7 +187,7 @@ CREATE TABLE `products_mutations` (
 
 LOCK TABLES `products_mutations` WRITE;
 /*!40000 ALTER TABLE `products_mutations` DISABLE KEYS */;
-INSERT INTO `products_mutations` VALUES (1,1,'Mobil','iPhone 12','iPhone 12 pro testovací','iphone-12-pro',19990,NULL,1,1,12,1,1);
+INSERT INTO `products_mutations` VALUES (1,1,'Mobil','iPhone 12','iPhone 12 pro testovací','iphone-12-pro',16520.7,NULL,1,1,12,1,1);
 /*!40000 ALTER TABLE `products_mutations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -200,6 +201,7 @@ DROP TABLE IF EXISTS `projects`;
 CREATE TABLE `projects` (
   `project_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(200) NOT NULL,
+  `domain` varchar(250) NOT NULL,
   `activated` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`project_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
@@ -211,7 +213,7 @@ CREATE TABLE `projects` (
 
 LOCK TABLES `projects` WRITE;
 /*!40000 ALTER TABLE `projects` DISABLE KEYS */;
-INSERT INTO `projects` VALUES (1,'Testovací eshop',1);
+INSERT INTO `projects` VALUES (1,'Testovací eshop','boshop.localhost',1);
 /*!40000 ALTER TABLE `projects` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -237,7 +239,7 @@ CREATE TABLE `users` (
   `dateUpdated` datetime NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `users_email_uindex` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -316,4 +318,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-20 15:53:23
+-- Dump completed on 2021-05-21 13:42:24
