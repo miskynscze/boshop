@@ -41,4 +41,8 @@ class CartItem
     public function setProduct(Product $product): void {
         $this->product = $product;
     }
+
+    public function createVirtualReservation() {
+        //TODO: Create virtual DB reservation
+    }
 }

@@ -39,4 +39,12 @@ class OrderItem extends DatabaseRow
     public function getProduct(): ProductMutation {
         return $this->product;
     }
+
+    public function setProduct(Product $product): void {
+        $this->product = $product->getProductMutation();
+    }
+
+    public function setQuantity(int $quantity): void {
+        $this->quantity = $quantity;
+    }
 }

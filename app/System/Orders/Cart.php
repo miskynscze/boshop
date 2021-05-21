@@ -196,4 +196,20 @@ class Cart
     public function getCoupon(): ?Coupon {
         return $this->coupon;
     }
+
+    public function saveOrder(): bool {
+        $order = new Order();
+
+        /** @var CartItem $cartItem */
+        foreach ($this->cartItems as $cartItem) {
+            $orderItem = new OrderItem();
+            $orderItem->setProduct($cartItem->getProduct());
+            $orderItem->setQuantity($cartItem->getQuantity());
+
+            $order->orderItems[] = $orderItem;
+        }
+
+        $order->save();
+        return true;
+    }
 }
