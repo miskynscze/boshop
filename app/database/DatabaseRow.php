@@ -128,6 +128,11 @@ class DatabaseRow extends \stdClass
                 continue;
             }
 
+            //Bug fix before fatal error (exception) if column is not defined in code
+            if(!property_exists($this, $key)) {
+                continue;
+            }
+
             $propertyType = SimpleTools::getPropertyType($this, $key);
             //Fetch model by ID
             if(!in_array($propertyType, ["int", "string", "bool", "float", "double"]) && (new $propertyType()) instanceof DatabaseRow) {

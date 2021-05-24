@@ -21,15 +21,12 @@ class CartItem
     public function addQuantity(int $quantity): void {
         $this->quantity += $quantity;
 
-        $this->cartVirtualItem->setQuantity($this->quantity);
-        $this->cartVirtualItem->save();
+        $this->updateQuantityVirtualItem($this->quantity);
     }
 
     public function decreaseQuantity(int $quantity): bool {
         $this->quantity -= $quantity;
-
-        $this->cartVirtualItem->setQuantity($this->quantity);
-        $this->cartVirtualItem->save();
+        $this->updateQuantityVirtualItem($this->quantity);
 
         return $this->quantity > 0;
     }
@@ -41,8 +38,7 @@ class CartItem
     public function setQuantity(int $quantity): void {
         $this->quantity = $quantity;
 
-        $this->cartVirtualItem->setQuantity($quantity);
-        $this->cartVirtualItem->save();
+        $this->updateQuantityVirtualItem($this->quantity);
     }
 
     public function setProduct(Product $product): void {
@@ -69,5 +65,12 @@ class CartItem
         }
 
         return false;
+    }
+
+    private function updateQuantityVirtualItem(int $quantity): void {
+        if($this->cartVirtualItem ?? null) {
+            $this->cartVirtualItem->setQuantity($quantity);
+            $this->cartVirtualItem->save();
+        }
     }
 }

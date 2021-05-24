@@ -52,13 +52,23 @@ class Cart
         if($cartIndex !== null) {
             /** @var CartItem $cartItem */
             $cartItem = $this->cartItems[$cartIndex];
-            $cartItem->addQuantity($quantity);
-            $this->cartItems[$cartIndex] = $cartItem;
+            $cartItem->getProduct()->getProductMutation()->reloadProduct();
 
-            return true;
+            if($cartItem->getProduct()->getProductMutation()->getStockQuantity() >= $quantity) {
+                $cartItem->addQuantity($quantity);
+                $this->cartItems[$cartIndex] = $cartItem;
+
+                return true;
+            }
+
+            return false;
         }
 
         if(!$product->getProductMutation()->isStockFree($quantity)) {
+            return false;
+        }
+
+        if($product->getProductMutation()->getStockQuantity() < $quantity) {
             return false;
         }
 

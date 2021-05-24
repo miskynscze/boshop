@@ -5,6 +5,7 @@ namespace BoShop\System\Products;
 
 
 use BoShop\Database\DatabaseRow;
+use BoShop\System\Cart\CartVirtualItem;
 use BoShop\System\Mutation;
 use BoShop\System\VAT;
 use BoShop\Tools\ProjectTools;
@@ -74,6 +75,38 @@ class ProductMutation extends DatabaseRow
 
     public function isStockFree(int $quantity): bool {
         return $this->quantityStock >= $quantity;
+    }
+
+    public function getStockQuantity(): ?int {
+        if($this->quantityStock <= 0) {
+            return null;
+        }
+
+        $productVariant = new ProductVariant();
+        $productVariant->getByWhere([
+            "product_mutation" => $this->getPrimaryKeyValue()
+        ]);
+
+        $cartVirtualItem = new CartVirtualItem();
+        $cartVirtualItem->getByProduct($this, $productVariant);
+
+        if($cartVirtualItem->cart_virtual_item_id ?? null) {
+            $quantityAfterVirtual = $this->quantityStock - $cartVirtualItem->quantity;
+        } else {
+            $quantityAfterVirtual = $this->quantityStock;
+        }
+
+        if($quantityAfterVirtual === 0) {
+            return null;
+        } elseif($quantityAfterVirtual < 0) {
+            throw new \Exception("Fatal error: Virtual cart item caused negative stock!");
+        }
+
+        return $quantityAfterVirtual;
+    }
+
+    public function reloadProduct(): void {
+        $this->getById($this->getPrimaryKeyValue());
     }
 
     public function __toString(): string {

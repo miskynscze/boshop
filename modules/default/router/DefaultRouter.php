@@ -2,7 +2,8 @@
 
 namespace Modules\Default\Router;
 
-use BoShop\Tools\SimpleTools;
+use BoShop\System\Cart\Cart;
+use BoShop\System\Products\Product;
 use FreeRouter\Attributes\Class\Controller;
 use FreeRouter\Attributes\Method;
 use FreeRouter\Attributes\Request;
@@ -26,6 +27,13 @@ class DefaultRouter implements IRouter
     #[Request("/")]
     #[Method(RequestMethod::GET)]
     public function index() {
+        $cart = Cart::getCart();
 
+        $product = new Product();
+        $product->getById(1);
+        $cart->addItem($product, 2);
+        $cart->saveCart();
+
+        echo $product->getProductMutation()->getStockQuantity();
     }
 }

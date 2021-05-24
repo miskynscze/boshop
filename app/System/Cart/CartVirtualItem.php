@@ -6,6 +6,7 @@ namespace BoShop\System\Cart;
 
 use BoShop\Database\DatabaseRow;
 use BoShop\System\Products\Product;
+use BoShop\System\Products\ProductMutation;
 use BoShop\System\Products\ProductVariant;
 
 class CartVirtualItem extends DatabaseRow
@@ -37,10 +38,16 @@ class CartVirtualItem extends DatabaseRow
         $this->cartIdentifier = $cartIdentifier;
     }
 
-    public function getByProduct(Product $product): void {
-        $this->getByWhere([
+    public function getByProduct(ProductMutation $product, ProductVariant $variant): void {
+        $whereCondition = [
             "product" => $product->getPrimaryKeyValue()
-        ]);
+        ];
+
+        if(isset($variant->product_variant_id)) {
+            $whereCondition["product_variant"] = $variant->getPrimaryKeyValue();
+        }
+
+        $this->getByWhere($whereCondition);
     }
 
     public function getByCartIdentifier(string $cartIdentifier): void {
