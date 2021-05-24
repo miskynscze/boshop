@@ -11,7 +11,7 @@ class Database
 
     private Medoo $database;
 
-    public function connect($host, $user, $pass, $db, $type = "mysql") {
+    public function connect(string $host, string $user, string $pass, string $db, string $type = "mysql"): void {
         $this->database = new Medoo([
             "type" => $type,
             "database" => $db,

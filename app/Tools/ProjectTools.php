@@ -10,8 +10,8 @@ use BoShop\System\Project;
 class ProjectTools
 {
 
-    private static Project $project;
-    private static Mutation $mutation;
+    private static ?Project $project;
+    private static ?Mutation $mutation;
 
     public static function getRunningProject(): Project {
         if(self::$project ?? null) {

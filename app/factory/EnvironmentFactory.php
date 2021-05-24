@@ -9,7 +9,7 @@ use Dotenv\Dotenv;
 class EnvironmentFactory extends AbstractFactory
 {
 
-    public static function produce()
+    public static function produce(): void
     {
         $dotenv = Dotenv::createImmutable(__DIR__ . "/../../");
         $dotenv->load();

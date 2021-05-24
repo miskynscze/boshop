@@ -10,7 +10,7 @@ use Whoops\Run;
 class ErrorHandlerFactory extends AbstractFactory
 {
 
-    public static function produce()
+    public static function produce(): void
     {
         $whoops = new Run();
 

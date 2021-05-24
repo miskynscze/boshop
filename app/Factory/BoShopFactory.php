@@ -9,7 +9,7 @@ use BoShop\System\Project;
 class BoShopFactory extends AbstractFactory
 {
 
-    public static function produce()
+    public static function produce(): void
     {
         \BoShop\Factory\EnvironmentFactory::produce();
         \BoShop\Factory\ErrorHandlerFactory::produce();

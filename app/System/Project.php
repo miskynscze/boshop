@@ -37,7 +37,7 @@ class Project extends DatabaseRow
         $this->save();
     }
 
-    public function getByDomain(string $domain) {
+    public function getByDomain(string $domain): void {
         $this->getByWhere([
             "domain" => $domain
         ]);

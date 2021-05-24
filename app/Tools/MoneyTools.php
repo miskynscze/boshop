@@ -12,7 +12,7 @@ use Money\Money;
 class MoneyTools
 {
 
-    public static function format($price) {
+    public static function format($price): string {
         $money = new Money($price * 100, new Currency("CZK"));
         $currencies = new ISOCurrencies();
 
