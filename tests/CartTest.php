@@ -21,6 +21,10 @@ final class CartTest extends \PHPUnit\Framework\TestCase
         self::assertInstanceOf(Cart::class, Cart::getCart());
     }
 
+    public function testIsCartEmpty(): void {
+        self::assertEquals(true, Cart::getCart()->isCartEmpty());
+    }
+
     public function testCanBeItemAdded(): void {
         $cart = Cart::getCart();
         $cart->addItem($this->getTestProduct());
