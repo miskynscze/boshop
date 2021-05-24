@@ -1,7 +1,7 @@
 <?php
 
 
-use BoShop\System\Orders\Cart;
+use BoShop\System\Cart\Cart;
 use BoShop\System\Orders\Coupon;
 use BoShop\System\Products\Product;
 use BoShop\System\Products\ProductMutation;

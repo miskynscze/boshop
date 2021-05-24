@@ -16,6 +16,7 @@ class ProductMutation extends DatabaseRow
     public const OUT_OF_STOCK = 2;
     public const ON_DEMAND = 3;
     public const COMING_SOON = 4;
+    public const RESERVED = 5;
 
     protected static string $primaryKey = "product_mutation_id";
     protected static string $tableName = "products_mutations";

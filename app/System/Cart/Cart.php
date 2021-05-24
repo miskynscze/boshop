@@ -1,20 +1,26 @@
 <?php
 
 
-namespace BoShop\System\Orders;
+namespace BoShop\System\Cart;
 
 
+use BoShop\System\Orders\Coupon;
+use BoShop\System\Orders\Order;
+use BoShop\System\Orders\OrderItem;
 use BoShop\System\Products\Product;
+use BoShop\Tools\SimpleTools;
 
 class Cart
 {
 
     public const CART_SESSION = "CART_TEMP";
 
-    private static ?Cart $cart;
+    private static ?Cart $cart = null;
 
     private ?Coupon $coupon = null;
     private array $cartItems = [];
+
+    private ?string $cartIdentifier = null;
 
     public static function getCart(): Cart {
         if(self::$cart ?? null) {
@@ -59,6 +65,7 @@ class Cart
         $cartItem = new CartItem();
         $cartItem->setProduct($product);
         $cartItem->setQuantity($quantity);
+        $cartItem->createVirtualReservation();
         $this->cartItems[] = $cartItem;
         
         return true;
@@ -69,6 +76,7 @@ class Cart
 
         if($cartIndex !== null) {
             if($quantity === null) {
+                $this->cartItems[$cartIndex]->deleteVirtualReservation();
                 unset($this->cartItems[$cartIndex]);
             } else {
                 /** @var CartItem $cartItem */
@@ -76,6 +84,7 @@ class Cart
                 $shouldLeave = $cartItem->decreaseQuantity($quantity);
 
                 if(!$shouldLeave) {
+                    $this->cartItems[$cartIndex]->deleteVirtualReservation();
                     unset($this->cartItems[$cartIndex]);
                 } else {
                     $this->cartItems[$cartIndex] = $cartItem;
@@ -221,5 +230,14 @@ class Cart
 
     public function saveCart(): void {
         $_SESSION[self::CART_SESSION] = $this;
+    }
+
+    public function getCartIdentifier(): string {
+        if($this->cartIdentifier ?? null) {
+            return $this->cartIdentifier;
+        }
+
+        $this->cartIdentifier = SimpleTools::generateRandomString(128);
+        return $this->cartIdentifier;
     }
 }

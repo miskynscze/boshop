@@ -2,9 +2,7 @@
 
 namespace Modules\Default\Router;
 
-use BoShop\System\Orders\Cart;
-use BoShop\System\Products\Product;
-use BoShop\Tools\MoneyTools;
+use BoShop\Tools\SimpleTools;
 use FreeRouter\Attributes\Class\Controller;
 use FreeRouter\Attributes\Method;
 use FreeRouter\Attributes\Request;
