@@ -2,6 +2,7 @@
 
 
 use BoShop\System\Orders\Cart;
+use BoShop\System\Orders\Coupon;
 use BoShop\System\Products\Product;
 use BoShop\System\Products\ProductMutation;
 use BoShop\System\VAT;
@@ -17,14 +18,14 @@ final class CartTest extends \PHPUnit\Framework\TestCase
     }
 
     public function testCanBeCartCreated(): void {
-        $this->assertInstanceOf(Cart::class, Cart::getCart());
+        self::assertInstanceOf(Cart::class, Cart::getCart());
     }
 
     public function testCanBeItemAdded(): void {
         $cart = Cart::getCart();
         $cart->addItem($this->getTestProduct());
 
-        $this->assertEquals(1, count($cart->getAllItems()));
+        self::assertEquals(1, count($cart->getAllItems()));
     }
 
     public function testCanBeItemRemoved(): void {
@@ -32,21 +33,53 @@ final class CartTest extends \PHPUnit\Framework\TestCase
         $cart->addItem($this->getTestProduct());
         $cart->removeItem($this->getTestProduct());
 
-        $this->assertEquals(null, $cart->getAllItems());
+        self::assertEquals(null, $cart->getAllItems());
     }
 
     public function testTotalCart(): void {
         $cart = Cart::getCart();
         $cart->addItem($this->getTestProduct());
 
-        $this->assertEquals(100, $cart->getCartTotal());
+        self::assertEquals(100, $cart->getCartTotal());
     }
 
     public function testTotalCartVAT(): void {
         $cart = Cart::getCart();
         $cart->addItem($this->getTestProduct());
 
-        $this->assertEquals(121, $cart->getCartTotalVAT());
+        self::assertEquals(121, $cart->getCartTotalVAT());
+    }
+
+    public function testSaveCartSession(): void {
+        $cart = Cart::getCart();
+        $cart->addItem($this->getTestProduct());
+        $cart->saveCart();
+
+        Cart::deleteTempCart();
+        $cartLoaded = Cart::getCart();
+        self::assertIsArray($cartLoaded->getAllItems());
+
+        Cart::deleteSessionCart();
+    }
+
+    public function testCartCoupon(): void {
+        $cart = Cart::getCart();
+        $cart->addItem($this->getTestProduct());
+        $cart->addCoupon($this->getTestCoupon());
+        self::assertEquals(101, $cart->getCartTotalVAT());
+
+        $cart->saveCart();
+    }
+
+    public function testCartCouponRemove(): void {
+        $cart = Cart::getCart();
+        $cart->removeCoupon();
+
+        self::assertEquals(121, $cart->getCartTotalVAT());
+
+        //Clear cart after tests
+        Cart::deleteTempCart();
+        Cart::deleteSessionCart();
     }
 
     private function getTestProduct(): Product {
@@ -70,5 +103,14 @@ final class CartTest extends \PHPUnit\Framework\TestCase
         $product->product_mutation = $product_mutation;
 
         return $product;
+    }
+
+    private function getTestCoupon(): Coupon {
+        $coupon = new Coupon();
+        $coupon->name = "Kupon 20";
+        $coupon->type = Coupon::VALUE;
+        $coupon->value = 20;
+
+        return $coupon;
     }
 }

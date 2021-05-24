@@ -11,7 +11,7 @@ class Cart
 
     public const CART_SESSION = "CART_TEMP";
 
-    private static Cart $cart;
+    private static ?Cart $cart;
 
     private ?Coupon $coupon = null;
     private array $cartItems = [];
@@ -28,6 +28,16 @@ class Cart
         }
 
         return self::$cart;
+    }
+
+    public static function deleteTempCart(): void {
+        if(self::$cart ?? null) {
+            self::$cart = null;
+        }
+    }
+
+    public static function deleteSessionCart(): void {
+        unset($_SESSION[self::CART_SESSION]);
     }
 
     public function addItem(Product $product, int $quantity = 1): bool {
