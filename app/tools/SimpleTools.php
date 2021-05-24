@@ -1,8 +1,10 @@
 <?php
 
 
-namespace BoShop\tools;
+namespace BoShop\Tools;
 
+
+use _HumbugBoxa991b62ce91e\Nette\Neon\Exception;
 
 class SimpleTools
 {
@@ -28,7 +30,14 @@ class SimpleTools
     }
 
     public static function getPropertyType(object $class, string $property) {
-        $reflection = new \ReflectionProperty($class, $property);
-        return $reflection->getType()->getName();
+        try {
+            $reflection = new \ReflectionProperty($class, $property);
+
+            /** @var \ReflectionNamedType $reflection */
+            $reflection = $reflection->getType();
+            return $reflection->getName();
+        } catch (\ReflectionException $e) {
+            throw new Exception($e->getMessage());
+        }
     }
 }

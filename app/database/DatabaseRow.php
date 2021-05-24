@@ -4,8 +4,8 @@
 namespace BoShop\Database;
 
 
-use BoShop\factory\DatabaseFactory;
-use BoShop\tools\SimpleTools;
+use BoShop\Factory\DatabaseFactory;
+use BoShop\Tools\SimpleTools;
 use Medoo\Medoo;
 
 class DatabaseRow extends \stdClass

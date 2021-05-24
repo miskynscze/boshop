@@ -44,6 +44,6 @@ class ProjectTools
     }
 
     public static function getMutationId(): int {
-        self::getMutation()->getPrimaryKeyValue();
+        return self::getMutation()->getPrimaryKeyValue();
     }
 }

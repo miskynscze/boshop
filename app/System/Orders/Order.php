@@ -53,10 +53,12 @@ class Order extends DatabaseRow
 
     public function getById(int $id): ?self
     {
+        /** @var Order $order */
         $order = parent::getById($id);
 
-        if($order !== null)
+        if($order !== null) {
             $order->loadItems();
+        }
 
         return $order;
     }

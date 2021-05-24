@@ -4,7 +4,7 @@
 namespace BoShop\Factory;
 
 
-use BoShop\database\Database;
+use BoShop\Database\Database;
 
 class DatabaseFactory extends AbstractFactory
 {

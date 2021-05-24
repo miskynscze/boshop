@@ -11,8 +11,8 @@ class BoShopFactory extends AbstractFactory
 
     public static function produce()
     {
-        \BoShop\factory\EnvironmentFactory::produce();
-        \BoShop\factory\ErrorHandlerFactory::produce();
+        \BoShop\Factory\EnvironmentFactory::produce();
+        \BoShop\Factory\ErrorHandlerFactory::produce();
 
         //Anti-piracy check and activated
         $project = new Project();
