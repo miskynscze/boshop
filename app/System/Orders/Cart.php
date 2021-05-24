@@ -14,7 +14,7 @@ class Cart
     private static Cart $cart;
 
     private ?Coupon $coupon = null;
-    private array $cartItems;
+    private array $cartItems = [];
 
     public static function getCart(): Cart {
         if(self::$cart ?? null) {
@@ -22,11 +22,7 @@ class Cart
         }
 
         if($_SESSION[self::CART_SESSION] ?? null) {
-            $unserialized = unserialize($_SESSION[self::CART_SESSION], [
-                "allowed_classes" => ["Cart"]
-            ]);
-
-            self::$cart = $unserialized;
+            self::$cart = $_SESSION[self::CART_SESSION];
         } else {
             self::$cart = new self();
         }
@@ -67,9 +63,9 @@ class Cart
             } else {
                 /** @var CartItem $cartItem */
                 $cartItem = $this->cartItems[$cartIndex];
-                $shouldRemove = $cartItem->decreaseQuantity($quantity);
+                $shouldLeave = $cartItem->decreaseQuantity($quantity);
 
-                if($shouldRemove) {
+                if(!$shouldLeave) {
                     unset($this->cartItems[$cartIndex]);
                 } else {
                     $this->cartItems[$cartIndex] = $cartItem;
@@ -137,7 +133,7 @@ class Cart
     }
 
     public function isCartEmpty(): bool {
-        return count($this->getAllItems()) > 0;
+        return count($this->cartItems) <= 0;
     }
 
     public function addCoupon(Coupon $coupon, $forceChange = false): bool {
@@ -211,5 +207,9 @@ class Cart
 
         $order->save();
         return true;
+    }
+
+    public function saveCart(): void {
+        $_SESSION[self::CART_SESSION] = $this;
     }
 }

@@ -19,6 +19,7 @@ class BoShopFactory extends AbstractFactory
         $project->getByDomain($_SERVER["HTTP_HOST"]);
 
         if(($project->project_id ?? null) && $project->isActivated()) {
+            session_start();
             \BoShop\Factory\RouterFactory::produce();
         } else {
             throw new \Exception("Domain was not found in any project or mutation");

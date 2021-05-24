@@ -16,5 +16,8 @@
             "BoShop\\": "app/",
             "Modules\\": "modules/"
         }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9"
     }
 }

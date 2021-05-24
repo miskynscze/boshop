@@ -17,7 +17,7 @@ class CartItem
     }
 
     public function addQuantity(int $quantity): void {
-        $this->quantity += $this->quantity;
+        $this->quantity += $quantity;
     }
 
     public function decreaseQuantity(int $quantity): bool {

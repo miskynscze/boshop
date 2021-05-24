@@ -17,7 +17,7 @@ class Product extends DatabaseRow
 
     public bool $published = false;
 
-    private ProductMutation $product_mutation;
+    public ProductMutation $product_mutation;
 
     public function getProductMutation(): ProductMutation {
         return $this->product_mutation;
