@@ -30,7 +30,7 @@ class SimpleTools
         return new $className();
     }
 
-    public static function getPropertyType(object $class, string $property) {
+    public static function getPropertyType(object $class, string $property): string {
         try {
             $reflection = new \ReflectionProperty($class, $property);
 

@@ -8,6 +8,8 @@ use BoShop\System\Orders\Coupon;
 use BoShop\System\Orders\Order;
 use BoShop\System\Orders\OrderItem;
 use BoShop\System\Products\Product;
+use BoShop\System\Users\UserAddress;
+use BoShop\Tools\ProjectTools;
 use BoShop\Tools\SimpleTools;
 
 class Cart
@@ -16,6 +18,9 @@ class Cart
     public const CART_SESSION = "CART_TEMP";
 
     private static ?Cart $cart = null;
+
+    private ?UserAddress $deliveryAddress = null;
+    private ?UserAddress $invoiceAddress = null;
 
     private ?Coupon $coupon = null;
     private array $cartItems = [];
@@ -232,9 +237,28 @@ class Cart
             $orderItem->setQuantity($cartItem->getQuantity());
 
             $order->orderItems[] = $orderItem;
+
+            //Delete virtual reservation
+            $cartItem->deleteVirtualReservation();
         }
 
+        $user = ProjectTools::getLoggedUser();
+        if($user !== null) {
+            $order->setUser($user);
+        } else {
+            $order->deliveryAddress = $this->deliveryAddress;
+            $order->invoiceAddress = $this->invoiceAddress;
+        }
+
+        $order->setCoupon($this->getCoupon());
+        $order->mutation = ProjectTools::getMutation();
+
         $order->save();
+
+        //Delete cart after save
+        self::deleteTempCart();
+        self::deleteSessionCart();
+
         return true;
     }
 

@@ -105,8 +105,16 @@ class ProductMutation extends DatabaseRow
         return $quantityAfterVirtual;
     }
 
+    public function getQuantityNoCalculation(): int {
+        return $this->quantityStock;
+    }
+
     public function reloadProduct(): void {
         $this->getById($this->getPrimaryKeyValue());
+    }
+
+    public function setQuantity(int $quantity): void {
+        $this->quantityStock = $quantity;
     }
 
     public function __toString(): string {

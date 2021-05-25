@@ -26,7 +26,7 @@ class Order extends DatabaseRow
 
     public int $order_id;
 
-    public User $user_id;
+    public ?User $user_id;
     public ?UserAddress $deliveryAddress;
     public ?UserAddress $invoiceAddress;
 
@@ -48,7 +48,19 @@ class Order extends DatabaseRow
     public function save($forceInsert = false): bool
     {
         $this->setDateUpdated();
-        return parent::save($forceInsert);
+        $saved = parent::save($forceInsert);
+
+        /** @var OrderItem $orderItem */
+        foreach ($this->orderItems as $orderItem) {
+            $orderItem->order_id = $this->getPrimaryKeyValue();
+            $orderItem->save();
+
+            $product = $orderItem->getProduct();
+            $product->setQuantity($product->getQuantityNoCalculation() - $orderItem->quantity);
+            $product->save();
+        }
+
+        return $saved;
     }
 
     public function getById(int $id): ?self
@@ -152,6 +164,15 @@ class Order extends DatabaseRow
 
     public function setCoupon(?Coupon $coupon): void {
         $this->coupon = $coupon;
+    }
+
+    public function setUser(?User $user): void {
+        $this->user_id = $user;
+
+        if($user !== null) {
+            $this->deliveryAddress = $user->deliveryAddress;
+            $this->invoiceAddress = $user->invoiceAddress;
+        }
     }
 
     private function setDateUpdated(): void {
