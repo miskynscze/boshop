@@ -63,6 +63,7 @@ class Cart
                 $cartItem->addQuantity($quantity);
                 $this->cartItems[$cartIndex] = $cartItem;
 
+                $this->saveCart();
                 return true;
             }
 
@@ -82,7 +83,8 @@ class Cart
         $cartItem->setQuantity($quantity);
         $cartItem->createVirtualReservation();
         $this->cartItems[] = $cartItem;
-        
+
+        $this->saveCart();
         return true;
     }
 
@@ -106,6 +108,7 @@ class Cart
                 }
             }
 
+            $this->saveCart();
             return true;
         }
 
@@ -228,6 +231,10 @@ class Cart
     }
 
     public function saveOrder(): bool {
+        if($this->isCartEmpty()) {
+            return false;
+        }
+
         $order = new Order();
 
         /** @var CartItem $cartItem */

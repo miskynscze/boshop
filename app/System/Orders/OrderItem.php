@@ -5,9 +5,9 @@ namespace BoShop\System\Orders;
 
 
 use BoShop\Database\DatabaseRow;
-use BoShop\System\Mutation;
 use BoShop\System\Products\Product;
 use BoShop\System\Products\ProductMutation;
+use BoShop\System\Products\ProductVariant;
 
 class OrderItem extends DatabaseRow
 {
@@ -20,6 +20,8 @@ class OrderItem extends DatabaseRow
     public int $order_id;
 
     public ProductMutation $product;
+    public ?ProductVariant $product_variant = null;
+
     public int $quantity;
 
     public function getByOrder(Order $order) {
@@ -46,5 +48,13 @@ class OrderItem extends DatabaseRow
 
     public function setQuantity(int $quantity): void {
         $this->quantity = $quantity;
+    }
+
+    public function setProductVariant(ProductVariant $productVariant) {
+        $this->product_variant = $productVariant;
+    }
+
+    public function getProductVariant(): ?ProductVariant {
+        return $this->product_variant;
     }
 }
