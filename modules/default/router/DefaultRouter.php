@@ -2,10 +2,7 @@
 
 namespace Modules\Default\Router;
 
-use BoShop\System\Cart\Cart;
 use BoShop\System\Products\Product;
-use BoShop\System\Users\User;
-use BoShop\Tools\ProjectTools;
 use FreeRouter\Attributes\Class\Controller;
 use FreeRouter\Attributes\Method;
 use FreeRouter\Attributes\Request;
@@ -29,16 +26,32 @@ class DefaultRouter implements IRouter
     #[Request("/")]
     #[Method(RequestMethod::GET)]
     public function index() {
-        $user = new User();
-        $user->getById(1);
-        ProjectTools::setLoggedUser($user);
+        echo "Vítejte na domovské stránce";
+    }
 
-        $cart = Cart::getCart();
+    #[Request("/product/{?product}")]
+    #[Method(RequestMethod::GET)]
+    public function productView($product = null) {
+        if($product ?? null) {
+            $productView = new Product();
+            $productView->getById((int)$product);
 
-        $product = new Product();
-        $product->getById(1);
+            echo "<pre>";
+            var_dump($productView);
+        } else {
+            header("Location: /");
+        }
+    }
 
-        echo $product->getProductMutation()->getStockQuantity();
-        //$cart->saveOrder();
+    #[Request("/paymentMollie")]
+    #[Method(RequestMethod::GET)]
+    public function indexPayment() {
+        echo "Test";
+    }
+
+    #[Request("/webhook")]
+    #[Method(RequestMethod::GET)]
+    public function webhookPayment() {
+
     }
 }

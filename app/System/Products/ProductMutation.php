@@ -6,6 +6,7 @@ namespace BoShop\System\Products;
 
 use BoShop\Database\DatabaseRow;
 use BoShop\System\Cart\CartVirtualItem;
+use BoShop\System\Categories\Category;
 use BoShop\System\Mutation;
 use BoShop\System\VAT;
 use BoShop\Tools\ProjectTools;
@@ -36,6 +37,7 @@ class ProductMutation extends DatabaseRow
 
     public VAT $vat;
     public Mutation $mutation;
+    public Category $category;
 
     public int $quantityStock = 0;
     public int $stockStatus = self::IN_STOCK;
