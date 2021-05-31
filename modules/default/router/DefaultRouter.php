@@ -2,6 +2,7 @@
 
 namespace Modules\Default\Router;
 
+use BoShop\System\Cart\Cart;
 use BoShop\System\Products\Product;
 use FreeRouter\Attributes\Class\Controller;
 use FreeRouter\Attributes\Method;
@@ -36,22 +37,27 @@ class DefaultRouter implements IRouter
             $productView = new Product();
             $productView->getById((int)$product);
 
-            echo "<pre>";
-            var_dump($productView);
+            echo "<h1>Produkt #{$productView->getPrimaryKeyValue()} - {$productView->getProductMutation()->name}</h1>";
+            echo "<p>
+                     Description: {$productView->getProductMutation()->description}<br/>
+                     Short description: {$productView->getProductMutation()->shortDescription}<br/>
+                     Stock: {$productView->getProductMutation()->getStockQuantity()}<br/>
+                     Price: {$productView->getProductMutation()->getPriceVAT()}</p>";
         } else {
             header("Location: /");
         }
     }
 
-    #[Request("/paymentMollie")]
+    #[Request("/cart")]
     #[Method(RequestMethod::GET)]
-    public function indexPayment() {
-        echo "Test";
-    }
+    public function cartView() {
+        $cart = Cart::getCart();
 
-    #[Request("/webhook")]
-    #[Method(RequestMethod::GET)]
-    public function webhookPayment() {
-
+        if($cartItems = $cart->getAllItems()) {
+            echo "<pre>";
+            var_dump($cart->getAllItems());
+        } else {
+            echo "V košíku nejsou žádné produkty";
+        }
     }
 }
